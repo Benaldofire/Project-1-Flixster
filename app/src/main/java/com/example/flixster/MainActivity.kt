@@ -22,7 +22,8 @@ class MainActivity : AppCompatActivity() {
     // 3. Create a custom row layout XML file to visualize the item - Done
     // 4. Create an Adapter and ViewHolder to render the item - Done
     // 5. Bind the adapter to the data source to popularize the RecyclerView - Done
-    // 6. Bind a layout manager to the RecyclerView
+    // 6. Bind a layout manager to the RecyclerView - Done
+    //7.  Display default placeholder graphic for each image during loading - Done
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

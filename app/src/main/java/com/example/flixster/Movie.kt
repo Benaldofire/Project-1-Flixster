@@ -8,8 +8,10 @@ data class Movie(
     private val posterPath: String,
     val title: String,
     val overview: String,
+    private val backdrop: String
 ) {
     val posterImgUrl = "https://image.tmdb.org/t/p/w342/$posterPath"
+    val backdropImgUrl = "https://image.tmdb.org/t/p/w342/$backdrop"
     companion object {
         fun fromJsonArray(movieJsonArray: JSONArray): List<Movie> {
             val movies = mutableListOf<Movie>()
@@ -20,7 +22,8 @@ data class Movie(
                         movieJson.getInt("id"),
                         movieJson.getString("poster_path"),
                         movieJson.getString("title"),
-                        movieJson.getString("overview")
+                        movieJson.getString("overview"),
+                        movieJson.getString("backdrop_path")
                     )
                 )
             }
