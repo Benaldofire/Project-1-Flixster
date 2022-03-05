@@ -1,6 +1,7 @@
 package com.example.flixster
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
+const val MOVIE_EXTRA = "MOVIE_EXTRA"
 class MovieAdapter(private val context: Context, private val movies: List<Movie>)
     : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
@@ -55,9 +57,11 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
         override fun onClick(p0: View?) {
             //1. Notified of the movie clicked on
             val movie = movies[adapterPosition]
-            Log.i("Ben", movie.title)
-            Toast.makeText(context, movie.title, Toast.LENGTH_SHORT).show()
             //2. Use the intent System to navigate to the new activity
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra(MOVIE_EXTRA, movie)
+
+            context.startActivity(intent)
         }
     }
 }
