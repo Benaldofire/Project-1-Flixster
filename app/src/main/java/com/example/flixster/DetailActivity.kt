@@ -11,10 +11,9 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerView
 import okhttp3.Headers
-import org.json.JSONException
 
 private const val TAG = "DetailsActivity"
-private const val YOUTUBE_API_KEY = "AIzaSyAZXSwQxX7PKOj1aFDkrbAWs5B8Qgb6BQg"
+private const val YOUTUBE_API_KEY = BuildConfig.YOUTUBE_API_KEY
 private const val TRAILERS_URL = "https://api.themoviedb.org/3/movie/%d/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"
 class DetailActivity : YouTubeBaseActivity() {
 
@@ -59,7 +58,7 @@ class DetailActivity : YouTubeBaseActivity() {
                 val movieTrailerJson = results.getJSONObject(0)
                 val youtubeKey = movieTrailerJson.getString("key")
                 // call the youtube method and pass in our key to play the video
-                initializeYoutube(youtubeKey)
+                initializeYoutube(youtubeKey, movie.voteAverage)
             }
 
         })
@@ -69,16 +68,21 @@ class DetailActivity : YouTubeBaseActivity() {
 
     }
 
-    private fun initializeYoutube(youtubeKey: String) {
-        tyPlayerView.initialize("YOUR API KEY", object : YouTubePlayer.OnInitializedListener {
+    private fun initializeYoutube(youtubeKey: String, voteAverage: Double) {
+        tyPlayerView.initialize(YOUTUBE_API_KEY, object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(
                 provider: YouTubePlayer.Provider,
                 youTubePlayer: YouTubePlayer,
                 b: Boolean
             ) {
 
-                // do any work here to cue video, play video, etc.
-                youTubePlayer.cueVideo(youtubeKey)
+                // Play video when rating > 5 else cue it
+                if( voteAverage > 5) {
+                    youTubePlayer.loadVideo(youtubeKey)
+                } else {
+                    youTubePlayer.cueVideo(youtubeKey)
+                }
+
             }
 
             override fun onInitializationFailure(

@@ -1,8 +1,10 @@
 package com.example.flixster
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 const val MOVIE_EXTRA = "MOVIE_EXTRA"
 class MovieAdapter(private val context: Context, private val movies: List<Movie>)
@@ -44,11 +47,16 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
             itemView.setOnClickListener(this)
         }
 
+        val radius = 40
         fun bind(movie: Movie) {
             tvTitle.text = movie.title
             tvOverview.text = movie.overview
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                Glide.with(context).load(movie.posterImgUrl).placeholder(R.drawable.loading).into(ivPoster)
+                Glide.with(context)
+                    .load(movie.posterImgUrl)
+                    .placeholder(R.drawable.loading)
+                    .transform(RoundedCorners(radius))
+                    .into(ivPoster)
             } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 Glide.with(context).load(movie.backdropImgUrl).placeholder(R.drawable.loading).into(ivPoster)
             }
@@ -60,6 +68,7 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
             //2. Use the intent System to navigate to the new activity
             val intent = Intent(context, DetailActivity::class.java)
             intent.putExtra(MOVIE_EXTRA, movie)
+
 
             context.startActivity(intent)
         }
